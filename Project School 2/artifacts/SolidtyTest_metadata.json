@@ -1,0 +1,99 @@
+{
+	"compiler": {
+		"version": "0.8.19+commit.7dd6d404"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_patchName",
+						"type": "string"
+					},
+					{
+						"internalType": "string[]",
+						"name": "_bugs",
+						"type": "string[]"
+					},
+					{
+						"internalType": "string[]",
+						"name": "_features",
+						"type": "string[]"
+					}
+				],
+				"name": "addPatch",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_patchName",
+						"type": "string"
+					}
+				],
+				"name": "getPatchDetails",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "string[]",
+								"name": "bugs",
+								"type": "string[]"
+							},
+							{
+								"internalType": "string[]",
+								"name": "features",
+								"type": "string[]"
+							}
+						],
+						"internalType": "struct SolidtyTest.Patch",
+						"name": "",
+						"type": "tuple"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"Documents/project/Project School 2/sumofnumbers.sol": "SolidtyTest"
+		},
+		"evmVersion": "paris",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"Documents/project/Project School 2/sumofnumbers.sol": {
+			"keccak256": "0xd495abd698bf91d850c2b2c6f5030d56c52b68fa9299a8f19a166e1b4e29e512",
+			"urls": [
+				"bzz-raw://801722d17eb5e04516090f31bad9122512d18fcc5e954a09d8e0bb5590f1d100",
+				"dweb:/ipfs/QmQSwo9bNe5Ax2DNR3WZi4FJ5Hewsn3ZwAipPVGf1ynk3L"
+			]
+		}
+	},
+	"version": 1
+}

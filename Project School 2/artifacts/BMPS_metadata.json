@@ -1,0 +1,149 @@
+{
+	"compiler": {
+		"version": "0.8.18+commit.87f61d96"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"name": "admin_read",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "bug_name",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "bug_description",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "bug_priority",
+								"type": "string"
+							}
+						],
+						"internalType": "struct Bugs[]",
+						"name": "",
+						"type": "tuple[]"
+					},
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "feature_name",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "feature_description",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "feature_priority",
+								"type": "string"
+							}
+						],
+						"internalType": "struct Features[]",
+						"name": "",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "time",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "pname",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "pdec",
+						"type": "string"
+					},
+					{
+						"internalType": "string[][]",
+						"name": "bugs",
+						"type": "string[][]"
+					},
+					{
+						"internalType": "string[][]",
+						"name": "features",
+						"type": "string[][]"
+					}
+				],
+				"name": "patch_request",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string[][]",
+						"name": "bugs",
+						"type": "string[][]"
+					},
+					{
+						"internalType": "string[][]",
+						"name": "features",
+						"type": "string[][]"
+					}
+				],
+				"name": "reporting",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"Complete.sol": "BMPS"
+		},
+		"evmVersion": "paris",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"Complete.sol": {
+			"keccak256": "0xc430a88d0e751053add5e6f384754c23bd713bfd24f5a5b0aecbbbb377506e7c",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://11709fdcf806fc9984263117835a4d8809d5f8ec736b30d7b7b5bf4ef60408e8",
+				"dweb:/ipfs/QmYPXwEGdkCbDpovhSK8LJxYqMamCC9P2V6nAFHMPMJNmx"
+			]
+		}
+	},
+	"version": 1
+}

@@ -1,0 +1,519 @@
+{
+	"compiler": {
+		"version": "0.8.18+commit.87f61d96"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "string[][]",
+						"name": "_bugs",
+						"type": "string[][]"
+					},
+					{
+						"internalType": "string[][]",
+						"name": "_features",
+						"type": "string[][]"
+					}
+				],
+				"name": "addBugandFeature",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_name",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_desc",
+						"type": "string"
+					},
+					{
+						"internalType": "string[][]",
+						"name": "_bugs",
+						"type": "string[][]"
+					},
+					{
+						"internalType": "string[][]",
+						"name": "_features",
+						"type": "string[][]"
+					},
+					{
+						"internalType": "string",
+						"name": "_version",
+						"type": "string"
+					}
+				],
+				"name": "approvePatch",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "approvedPatches",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "name",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "description",
+								"type": "string"
+							},
+							{
+								"internalType": "string[][]",
+								"name": "bugs",
+								"type": "string[][]"
+							},
+							{
+								"internalType": "string[][]",
+								"name": "features",
+								"type": "string[][]"
+							},
+							{
+								"internalType": "string",
+								"name": "version",
+								"type": "string"
+							},
+							{
+								"internalType": "bool",
+								"name": "approved",
+								"type": "bool"
+							},
+							{
+								"internalType": "bool",
+								"name": "deployed",
+								"type": "bool"
+							}
+						],
+						"internalType": "struct PatchFile[]",
+						"name": "",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "deployedPatches",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "name",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "description",
+								"type": "string"
+							},
+							{
+								"internalType": "string[][]",
+								"name": "bugs",
+								"type": "string[][]"
+							},
+							{
+								"internalType": "string[][]",
+								"name": "features",
+								"type": "string[][]"
+							},
+							{
+								"internalType": "string",
+								"name": "version",
+								"type": "string"
+							},
+							{
+								"internalType": "bool",
+								"name": "approved",
+								"type": "bool"
+							},
+							{
+								"internalType": "bool",
+								"name": "deployed",
+								"type": "bool"
+							}
+						],
+						"internalType": "struct PatchFile[]",
+						"name": "",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getBugs",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "name",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "description",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "priority",
+								"type": "string"
+							}
+						],
+						"internalType": "struct Bug[]",
+						"name": "",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getFeatures",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "name",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "description",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "priority",
+								"type": "string"
+							}
+						],
+						"internalType": "struct Feature[]",
+						"name": "",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "patchDetails",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "name",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "description",
+								"type": "string"
+							},
+							{
+								"internalType": "string[][]",
+								"name": "bugs",
+								"type": "string[][]"
+							},
+							{
+								"internalType": "string[][]",
+								"name": "features",
+								"type": "string[][]"
+							}
+						],
+						"internalType": "struct Patch[]",
+						"name": "",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_name",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_desc",
+						"type": "string"
+					},
+					{
+						"internalType": "string[][]",
+						"name": "_bugs",
+						"type": "string[][]"
+					},
+					{
+						"internalType": "string[][]",
+						"name": "_features",
+						"type": "string[][]"
+					},
+					{
+						"internalType": "string",
+						"name": "_version",
+						"type": "string"
+					}
+				],
+				"name": "rejectPatch",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "rejectedPatches",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "name",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "description",
+								"type": "string"
+							},
+							{
+								"internalType": "string[][]",
+								"name": "bugs",
+								"type": "string[][]"
+							},
+							{
+								"internalType": "string[][]",
+								"name": "features",
+								"type": "string[][]"
+							},
+							{
+								"internalType": "string",
+								"name": "version",
+								"type": "string"
+							},
+							{
+								"internalType": "bool",
+								"name": "approved",
+								"type": "bool"
+							},
+							{
+								"internalType": "bool",
+								"name": "deployed",
+								"type": "bool"
+							}
+						],
+						"internalType": "struct PatchFile[]",
+						"name": "",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_name",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_desc",
+						"type": "string"
+					},
+					{
+						"internalType": "string[][]",
+						"name": "_bugs",
+						"type": "string[][]"
+					},
+					{
+						"internalType": "string[][]",
+						"name": "_features",
+						"type": "string[][]"
+					},
+					{
+						"internalType": "string",
+						"name": "_version",
+						"type": "string"
+					}
+				],
+				"name": "requestDeploy",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_name",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_desc",
+						"type": "string"
+					},
+					{
+						"internalType": "string[][]",
+						"name": "_bugs",
+						"type": "string[][]"
+					},
+					{
+						"internalType": "string[][]",
+						"name": "_features",
+						"type": "string[][]"
+					}
+				],
+				"name": "requestPatch",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_name",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_desc",
+						"type": "string"
+					},
+					{
+						"internalType": "string[][]",
+						"name": "_bugs",
+						"type": "string[][]"
+					},
+					{
+						"internalType": "string[][]",
+						"name": "_features",
+						"type": "string[][]"
+					},
+					{
+						"internalType": "string",
+						"name": "_version",
+						"type": "string"
+					}
+				],
+				"name": "requestQA",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "requestedPatches",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "name",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "description",
+								"type": "string"
+							},
+							{
+								"internalType": "string[][]",
+								"name": "bugs",
+								"type": "string[][]"
+							},
+							{
+								"internalType": "string[][]",
+								"name": "features",
+								"type": "string[][]"
+							},
+							{
+								"internalType": "string",
+								"name": "version",
+								"type": "string"
+							},
+							{
+								"internalType": "bool",
+								"name": "approved",
+								"type": "bool"
+							},
+							{
+								"internalType": "bool",
+								"name": "deployed",
+								"type": "bool"
+							}
+						],
+						"internalType": "struct PatchFile[]",
+						"name": "",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"blc.sol": "PatchManagement"
+		},
+		"evmVersion": "paris",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"blc.sol": {
+			"keccak256": "0xdf1393114f844130ff31f4993ee853df2c1e59aee6a6cc491fdc1fad17096173",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://67198a199544a462dfda26d4418c0654ea3ce2051c6b8f77ecb298a84514fb3e",
+				"dweb:/ipfs/QmUeYbTJCueJrW9PLjv1SaDgu13ehsfG283VJe7DfZvm6h"
+			]
+		}
+	},
+	"version": 1
+}

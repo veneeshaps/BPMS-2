@@ -1,10 +1,13 @@
-//SPDX-Licence-Identifier: UNLICENSED
+// SPDX-Licence-Identifier: UNLICENSED
 pragma solidity ^0.8.0;
 
 contract SolidtyTest {
     struct Patch{
         string[] bugs;
         string[] features;
+    }
+    struct AllPatch{
+        string[] patches;
     }
     string[] all_patches;
     mapping(string=>Patch) patches;
@@ -14,5 +17,8 @@ contract SolidtyTest {
     }
     function getPatchDetails(string memory _patchName)public view returns(Patch memory){
         return patches[_patchName];
+    }
+    function allPatches()public view returns(AllPatch memory){
+        return AllPatch(all_patches);
     }
 }

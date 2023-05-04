@@ -1,8 +1,8 @@
 import {Link,NavLink} from 'react-router-dom';
 import {useState,useEffect} from 'react';
-import Web3 from 'web3';
 import {ABI,contractAddress} from '../contract';
-export default function Patch(){
+import Web3 from 'web3';
+export default function Quality(){
     const [contract,setContract] = useState(null);
     const [account,setAccount] = useState(null);
     const [patches,setPatches] = useState(null);
@@ -25,14 +25,22 @@ export default function Patch(){
             console.log(error);
         }
     }
-    const getPatches=async()=>{
-        const data = await contract.methods.deployedPatches().call();
+    const requestedPatches=async()=>{
+        const data = await contract.methods.requestedPatches().call();
         setPatches(data);
+    }
+    const approvePatch=async(e)=>{
+        e.preventDefault();
+        await contract.methods.approvePatch(patches[e.target.value][0],patches[e.target.value][1],patches[e.target.value][2],patches[e.target.value][3],patches[e.target.value][4]).send({from:account});
+    }
+    const rejectPatch=async(e)=>{
+        e.preventDefault();
+        await contract.methods.rejectPatch(patches[e.target.value][0],patches[e.target.value][1],patches[e.target.value][2],patches[e.target.value][3],patches[e.target.value][4]).send({from:account});
     }
     useEffect(()=>{
         connectMetamask();connectContract();
     },[]);
-    getPatches();
+    requestedPatches();
     return(
         <>
         <nav className="navbar navbar-expand-md navbar-light bg-light">
@@ -44,19 +52,16 @@ export default function Patch(){
             <div className="collapse navbar-collapse" id="navbarToggler"></div>
             <ul className="container-fluid justify-content-center navbar-nav me-auto mb-2 mb-lg-0">
                 <li className="nav-item">
-                <NavLink className="nav-link link" to="/user/home">Home</NavLink>
+                <NavLink className="nav-link link" to="/qa">Recieved Request</NavLink>
                 </li>
                 <li className="nav-item">
-                <NavLink className="nav-link link" to="/user/reportbug">Report Bug</NavLink>
-                </li>
-                <li className="nav-item">
-                <NavLink className="nav-link link" to="/user/patch">Patches</NavLink>
+                <NavLink className="nav-link link" to="/qa/previous">Previous Requests</NavLink>
                 </li>
             </ul>
         </div>
         </nav>
         <div className="container-fluid">
-            <h3 className="fw-bold text-center">Updates</h3>
+            <h3 className="fw-bold text-center">List of Patches</h3>
             <table className="table text-center">
                 {patches?
                 <>
@@ -65,6 +70,7 @@ export default function Patch(){
                 <th>Patch Description</th>
                 <th>Bugs and Features</th>
                 <th>Version</th>
+                <th>Approve/Reject</th>
                 <th>Download</th>
                 </>
             :<></>
@@ -81,6 +87,8 @@ export default function Patch(){
                                 {row.features.map(feature=><>{feature[0]} </>)}
                                 </td>
                                 <td>{row.version}</td>
+                                <td><button className='btn-sm btn-success me-2' value={index} onClick={e=>approvePatch(e)}>Approve</button>
+                                <button className='btn-sm btn-danger' value={index} onClick={e=>rejectPatch(e)}>Reject</button></td>
                                 <td><button className='btn-sm btn-dark'>Download</button></td>
                             </tr>);
                         }):<>No Patches were Found.</>

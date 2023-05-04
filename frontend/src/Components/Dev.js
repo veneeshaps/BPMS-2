@@ -1,11 +1,12 @@
 import {Link,NavLink} from 'react-router-dom';
 import {useState,useEffect} from 'react';
-import Web3 from 'web3';
 import {ABI,contractAddress} from '../contract';
-export default function Patch(){
+import Web3 from 'web3';
+export default function Dev(){
     const [contract,setContract] = useState(null);
     const [account,setAccount] = useState(null);
     const [patches,setPatches] = useState(null);
+    const [file,setFile] = useState(null);
     const connectContract=async()=>{
         const web3 = new Web3(window.ethereum);
         const myContract = new web3.eth.Contract(ABI , contractAddress);
@@ -25,9 +26,25 @@ export default function Patch(){
             console.log(error);
         }
     }
+    const FileChange=(e)=>{
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.readAsArrayBuffer(file);
+        reader.onload = () =>{
+            const fileBuffer = reader.result
+            const fileBytes = new Uint8Array(fileBuffer);
+            setFile(fileBytes);
+        };
+    };
     const getPatches=async()=>{
-        const data = await contract.methods.deployedPatches().call();
+        const data = await contract.methods.patchDetails().call();
         setPatches(data);
+    }
+    const requestQA=async(e)=>{
+        e.preventDefault();
+        const version = document.getElementById(patches[e.target.value][0]).value;
+        console.log(file);
+        await contract.methods.requestQA(patches[e.target.value][0],patches[e.target.value][1],patches[e.target.value][2],patches[e.target.value][3],version).send({from:account});
     }
     useEffect(()=>{
         connectMetamask();connectContract();
@@ -44,19 +61,13 @@ export default function Patch(){
             <div className="collapse navbar-collapse" id="navbarToggler"></div>
             <ul className="container-fluid justify-content-center navbar-nav me-auto mb-2 mb-lg-0">
                 <li className="nav-item">
-                <NavLink className="nav-link link" to="/user/home">Home</NavLink>
-                </li>
-                <li className="nav-item">
-                <NavLink className="nav-link link" to="/user/reportbug">Report Bug</NavLink>
-                </li>
-                <li className="nav-item">
-                <NavLink className="nav-link link" to="/user/patch">Patches</NavLink>
+                <NavLink className="nav-link link" to="/dev/patch">Home</NavLink>
                 </li>
             </ul>
         </div>
         </nav>
         <div className="container-fluid">
-            <h3 className="fw-bold text-center">Updates</h3>
+            <h3 className="fw-bold text-center">List of Patches</h3>
             <table className="table text-center">
                 {patches?
                 <>
@@ -64,8 +75,9 @@ export default function Patch(){
                 <th>Patch Name</th>
                 <th>Patch Description</th>
                 <th>Bugs and Features</th>
-                <th>Version</th>
-                <th>Download</th>
+                <th>Enter Version</th>
+                <th>File</th>
+                <th>Upload</th>
                 </>
             :<></>
                 }
@@ -80,13 +92,14 @@ export default function Patch(){
                                 <td>{row.bugs.map(bug=><>{bug[0]} </>)}
                                 {row.features.map(feature=><>{feature[0]} </>)}
                                 </td>
-                                <td>{row.version}</td>
-                                <td><button className='btn-sm btn-dark'>Download</button></td>
+                                <td><input className='form-control-sm' type='text' id={row.name} placeholder='Version Number'/></td>
+                                <td><input className="form-control form-control-sm" id="formFileSm" type="file" onChange={e=>FileChange(e)} /></td>
+                                <td><button className='btn-sm btn-dark' value={index} onClick={(e)=>requestQA(e)}>Upload</button></td>
                             </tr>);
                         }):<>No Patches were Found.</>
                     }</tbody>
             </table>
         </div>
         </>
-    )
+    );
 }

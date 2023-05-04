@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.19+commit.7dd6d404"
+		"version": "0.8.18+commit.87f61d96"
 	},
 	"language": "Solidity",
 	"output": {
@@ -26,6 +26,26 @@
 				"name": "addPatch",
 				"outputs": [],
 				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "allPatches",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "string[]",
+								"name": "patches",
+								"type": "string[]"
+							}
+						],
+						"internalType": "struct SolidtyTest.AllPatch",
+						"name": "",
+						"type": "tuple"
+					}
+				],
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -73,7 +93,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"Documents/project/Project School 2/sumofnumbers.sol": "SolidtyTest"
+			"sumofnumbers.sol": "SolidtyTest"
 		},
 		"evmVersion": "paris",
 		"libraries": {},
@@ -87,11 +107,11 @@
 		"remappings": []
 	},
 	"sources": {
-		"Documents/project/Project School 2/sumofnumbers.sol": {
-			"keccak256": "0xd495abd698bf91d850c2b2c6f5030d56c52b68fa9299a8f19a166e1b4e29e512",
+		"sumofnumbers.sol": {
+			"keccak256": "0x93e99ead6c894d0d254190d886f9b7751e3a5aa2180296bcc2e38eb3c91ef104",
 			"urls": [
-				"bzz-raw://801722d17eb5e04516090f31bad9122512d18fcc5e954a09d8e0bb5590f1d100",
-				"dweb:/ipfs/QmQSwo9bNe5Ax2DNR3WZi4FJ5Hewsn3ZwAipPVGf1ynk3L"
+				"bzz-raw://7cdb27b5d6e327b5ef98045cd935ad444b02f236a52ad5c70803b8aecc6e0d8e",
+				"dweb:/ipfs/QmdhdXaWX2sqrXniFA59zJNTTHcW4kDQXoS7P9DoqUQvXn"
 			]
 		}
 	},

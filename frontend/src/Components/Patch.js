@@ -29,6 +29,7 @@ export default function Patch(){
         const data = await contract.methods.deployedPatches().call();
         setPatches(data);
     }
+
     useEffect(()=>{
         connectMetamask();connectContract();
     },[]);
@@ -53,6 +54,11 @@ export default function Patch(){
                 <NavLink className="nav-link link" to="/user/patch">Patches</NavLink>
                 </li>
             </ul>
+            <div className="nav-item ms-auto">
+        <span class="user-name fw-bold">
+          USER
+        </span>
+      </div>
         </div>
         </nav>
         <div className="container-fluid">

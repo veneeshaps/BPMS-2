@@ -27,8 +27,8 @@ export default function Deployment(){
     }
     const getPatches=async()=>{
         const approved = await contract.methods.approvedPatches().call();
-        const rejected = await contract.methods.rejectedPatches().call();
-        setPatches([...approved,...rejected]);
+        // const rejected = await contract.methods.rejectedPatches().call();
+         setPatches([...approved]);
     }
     const DeployRequest=async(e)=>{
         e.preventDefault();
@@ -55,6 +55,11 @@ export default function Deployment(){
                 <NavLink className="nav-link link" to="/admin/deployment">Deploy Patch</NavLink>
                 </li>
             </ul>
+            <div className="nav-item ms-auto">
+        <span class="user-name fw-bold">
+          ADMIN
+        </span>
+      </div>
         </div>
         </nav>
         <div className="container-fluid">

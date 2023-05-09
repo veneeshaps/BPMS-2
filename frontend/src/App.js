@@ -4,7 +4,7 @@ import Bug from './Components/Bug';
 import Patch from './Components/Patch';
 import BReport from './Components/BReport';
 import Request from './Components/Request';
-import PatchRequest from './Components/PatchRequest';
+import PatchRequest from './Components/PatchRequest'; 
 import Deployment from './Components/Deployment';
 import Dev from './Components/Dev';
 import Quality from './Components/Quality';

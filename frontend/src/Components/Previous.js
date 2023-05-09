@@ -51,6 +51,11 @@ export default function Previous(){
                 <NavLink className="nav-link link" to="/qa/previous">Previous Requests</NavLink>
                 </li>
             </ul>
+            <div className="nav-item ms-auto">
+        <span class="user-name fw-bold">
+          QUALITY CHECKER
+        </span>
+      </div>
         </div>
         </nav>
         <div className="container-fluid">

@@ -33,6 +33,11 @@ export default function Bug(){
                 <NavLink className="nav-link link" to="/user/patch">Patches</NavLink>
                 </li>
             </ul>
+            <div className="nav-item ms-auto">
+        <span class="user-name fw-bold">
+          USER
+        </span>
+      </div>
         </div>
         </nav>
         <form className='m-4' onSubmit={(e)=>AddBug(e)}>

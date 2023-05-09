@@ -87,6 +87,11 @@ export default function PatchRequest(){
                 <NavLink className="nav-link link" to="/admin/deployment">Deploy Patch</NavLink>
                 </li>
             </ul>
+            <div className="nav-item ms-auto">
+        <span class="user-name fw-bold">
+          ADMIN
+        </span>
+      </div>
         </div>
         </nav>
         <h3 className='fw-bold container mt-3'>List of Bugs and Features</h3>

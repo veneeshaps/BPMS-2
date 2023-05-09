@@ -82,6 +82,11 @@ export default function Request(){
                 <NavLink className="nav-link link" to="/reporter/sendrequest">Request</NavLink>
                 </li>
             </ul>
+            <div className="nav-item ms-auto">
+        <span class="user-name fw-bold">
+          REPORTER
+        </span>
+      </div>
         </div>
         </nav>
         <div className="container mt-5 mb-3">

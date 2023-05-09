@@ -64,6 +64,11 @@ export default function Dev(){
                 <NavLink className="nav-link link" to="/dev/patch">Home</NavLink>
                 </li>
             </ul>
+            <div className="nav-item ms-auto">
+        <span class="user-name fw-bold">
+          DEVELOPER
+        </span>
+      </div>
         </div>
         </nav>
         <div className="container-fluid">

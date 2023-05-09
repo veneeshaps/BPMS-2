@@ -9,6 +9,7 @@ export default function Home(){
         <Link className="navbar-brand" to="/">BPMS</Link>
         <div className="collapse navbar-collapse" id="navbarToggler"></div>
         <ul className="container-fluid justify-content-center navbar-nav me-auto mb-2 mb-lg-0">
+             
             <li className="nav-item">
             <NavLink className="nav-link link" to="/user/home">Home</NavLink>
             </li>
@@ -19,6 +20,11 @@ export default function Home(){
             <NavLink className="nav-link link" to="/user/patch">Patches</NavLink>
             </li>
         </ul>
+        <div className="nav-item ms-auto">
+        <span class="user-name fw-bold">
+          USER
+        </span>
+      </div>
     </div>
     </nav>
     </>)

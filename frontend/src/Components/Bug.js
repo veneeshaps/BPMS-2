@@ -11,6 +11,7 @@ export default function Bug(){
         const {data} = await axios.post("http://localhost:3001/userbug",{...newBug});
         if(data.status ==="Bug Added"){
             window.alert("Reported Bug");
+            window.location.reload(false);
         }
     }
     return(

@@ -44,6 +44,7 @@ export default function PatchRequest(){
         e.preventDefault();
         const {bugs,features} = getArray();
         await contract.methods.requestPatch(patch.name,patch.description,bugs,features).send({from: account });
+        window.location.reload(false);
     }
     const connectContract=async()=>{
         const web3 = new Web3(window.ethereum);

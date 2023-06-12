@@ -1,7 +1,8 @@
 import {Link,NavLink} from 'react-router-dom';
 import {useState,useEffect} from 'react';
-import {ABI,contractAddress} from '../contract';
+import {ABI,contractAddress,fileContent} from '../contract';
 import Web3 from 'web3';
+
 export default function Quality(){
     const [contract,setContract] = useState(null);
     const [account,setAccount] = useState(null);
@@ -36,6 +37,16 @@ export default function Quality(){
     const rejectPatch=async(e)=>{
         e.preventDefault();
         await contract.methods.rejectPatch(patches[e.target.value][0],patches[e.target.value][1],patches[e.target.value][2],patches[e.target.value][3],patches[e.target.value][4]).send({from:account});
+    }
+    const downloadPatch=(e)=>{
+        if (fileContent) {
+            const element = document.createElement('a');
+            const file = new Blob([atob(fileContent)], {type: 'application/x-msdownload'});
+            element.href = URL.createObjectURL(file);
+            element.download = 'file.exe';
+            document.body.appendChild(element);
+            element.click();
+          }
     }
     useEffect(()=>{
         connectMetamask();connectContract();
@@ -75,8 +86,8 @@ export default function Quality(){
                 <th>Patch Description</th>
                 <th>Bugs and Features</th>
                 <th>Version</th>
-                <th>Approve/Reject</th>
                 <th>Download</th>
+                <th>Approve/Reject</th>
                 </>
             :<></>
                 }
@@ -92,9 +103,9 @@ export default function Quality(){
                                 {row.features.map(feature=><>{feature[0]} </>)}
                                 </td>
                                 <td>{row.version}</td>
+                                <td><button onClick = {e=>downloadPatch(e)} className='btn-sm btn-dark'>Download</button></td>
                                 <td><button className='btn-sm btn-success me-2' value={index} onClick={e=>approvePatch(e)}>Approve</button>
                                 <button className='btn-sm btn-danger' value={index} onClick={e=>rejectPatch(e)}>Reject</button></td>
-                                <td><button className='btn-sm btn-dark'>Download</button></td>
                             </tr>);
                         }):<>No Patches were Found.</>
                     }</tbody>

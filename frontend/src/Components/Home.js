@@ -9,7 +9,9 @@ export default function Home(){
         <Link className="navbar-brand" to="/">BPMS</Link>
         <div className="collapse navbar-collapse" id="navbarToggler"></div>
         <ul className="container-fluid justify-content-center navbar-nav me-auto mb-2 mb-lg-0">
-             
+        {/* <li className="nav-item">
+            <NavLink className="nav-link link" to="/user/home">Login</NavLink>
+            </li> */}
             <li className="nav-item">
             <NavLink className="nav-link link" to="/user/home">Home</NavLink>
             </li>

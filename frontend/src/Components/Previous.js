@@ -1,6 +1,6 @@
 import {Link,NavLink} from 'react-router-dom';
 import {useState,useEffect} from 'react';
-import {ABI,contractAddress} from '../contract';
+import {ABI,contractAddress,fileContent} from '../contract';
 import Web3 from 'web3';
 export default function Previous(){
     const [contract,setContract] = useState(null);
@@ -24,6 +24,16 @@ export default function Previous(){
         }catch(error){
             console.log(error);
         }
+    }
+    const downloadPatch=(e)=>{
+        if (fileContent) {
+            const element = document.createElement('a');
+            const file = new Blob([atob(fileContent)], {type: 'application/x-msdownload'});
+            element.href = URL.createObjectURL(file);
+            element.download = 'file.exe';
+            document.body.appendChild(element);
+            element.click();
+          }
     }
     const getPatches=async()=>{
         const approved = await contract.methods.approvedPatches().call();
@@ -86,7 +96,7 @@ export default function Previous(){
                                 </td>
                                 <td>{row.version}</td>
                                 <td>{row.approved?<span className='text-success fw-bold'>Approved</span>:<span className='text-danger fw-bold'>Rejected</span>}</td>
-                                <td><button className='btn-sm btn-dark'>Download</button></td>
+                                <td><button onClick  = {e=>downloadPatch(e)} className='btn-sm btn-dark'>Download</button></td>
                             </tr>);
                         }):<>No Patches were Found.</>
                     }</tbody>

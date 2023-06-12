@@ -41,7 +41,9 @@ export default function Request(){
         e.preventDefault();
         console.log(bugs,features);
         await contract.methods.addBugandFeature(bugs,features).send({from:account});
-        console.log("Request Made");
+        // console.log("Request Made");
+        window.alert("Request Made");
+        window.location.reload(false);
     }
     const connectContract=async()=>{
         const web3 = new Web3(window.ethereum);

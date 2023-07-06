@@ -32,11 +32,13 @@ export default function Quality(){
     }
     const approvePatch=async(e)=>{
         e.preventDefault();
-        await contract.methods.approvePatch(patches[e.target.value][0],patches[e.target.value][1],patches[e.target.value][2],patches[e.target.value][3],patches[e.target.value][4]).send({from:account});
+        const transaction = await contract.methods.approvePatch(patches[e.target.value][0],patches[e.target.value][1],patches[e.target.value][2],patches[e.target.value][3],patches[e.target.value][4]).send({from:account});
+        console.log(transaction);
     }
     const rejectPatch=async(e)=>{
         e.preventDefault();
-        await contract.methods.rejectPatch(patches[e.target.value][0],patches[e.target.value][1],patches[e.target.value][2],patches[e.target.value][3],patches[e.target.value][4]).send({from:account});
+        const transaction = await contract.methods.rejectPatch(patches[e.target.value][0],patches[e.target.value][1],patches[e.target.value][2],patches[e.target.value][3],patches[e.target.value][4]).send({from:account});
+        console.log(transaction);
     }
     const downloadPatch=(e)=>{
         if (fileContent) {

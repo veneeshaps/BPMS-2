@@ -5,6 +5,7 @@ mongoose.set('strictQuery',true);
 
 const UserBug = require('./Schema/userbug');
 const User = require('./Schema/user');
+const bcrypt = require('bcrypt')
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -26,21 +27,58 @@ app.post("/userbug",async(req,res)=>{
     const userbug = await UserBug.create({...req.body});
     res.send({status:"Bug Added"});
 })
-app.post("/login",async(req,res)=>{
-    const user = await User.find({...req.body});
-    if (user){
-        res.send({usertype:user.type})
+
+app.post("/login", async (req, res) => {
+    const user = await User.findOne({ email: req.body.email });
+  
+    if (user) {
+      const isPasswordValid = await bcrypt.compare(
+        req.body.password,
+        user.password
+      );
+  
+      if (isPasswordValid) {
+        res.send({ usertype: user.type });
+      } else {
+        res.send({ error: "Invalid login" }); 
+      }
+    } else {
+      res.send({ error: "No user found or invalid login" }); 
     }
-    else {
-        res.send({error:"no user found"})
-    }
-})
+  });
+
 app.post("/signup",async(req,res)=>{
-    const user = await User.create({...req.body})
-    if (user){
-        res.send({usertype:user.type})
+    const handleError=(err)=>{
+        let errors = {email:""};
+        if(err.name === "ValidationError"){
+            Object.keys(err.errors).forEach((key) => {
+                errors[key] = err.errors[key].message;
+              });
+        }
+        console.log()
+        if(err.code === 11000){
+            errors.email = "Email is already Registered.";
+        }
+        return errors;
     }
-    else {
-        res.send({error:"role not added"})
+    try{
+        const bcrypt = require('bcrypt');
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
+        const { email, type } = req.body;
+        const newUser = {
+        email,
+        password: hashedPassword,
+        type,
+        };
+        console.log(newUser)
+        const user = await User.create(newUser)
+        if (user){
+            res.send({usertype:user.type})
+        }
+    }
+    catch(err){
+        const errors = handleError(err);
+        res.send(errors);
     }
 })

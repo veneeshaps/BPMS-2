@@ -3,20 +3,31 @@ import {useState} from 'react';
 import {Link,useNavigate,NavLink} from 'react-router-dom';
 import axios from 'axios';
 
-export default function Login(){
+export default function Login() {
     const Navigate = useNavigate();
-    const [log,setLog] = useState({
-        email:"",
-        pass:""
+    const [log, setLog] = useState({
+      email: "",
+      password: ""
     });
-    const handleSubmit = async(event)=>{
-        event.preventDefault();
-        try{
-            const {data} = await axios.post('http://localhost:3001/login',{...log})
-        }catch(err){
-            console.log(err);
+    const [error, setError] = useState(""); // New state for error message
+  
+    const handleSubmit = async (event) => {
+      event.preventDefault();
+      try {
+        const { data } = await axios.post('http://localhost:3001/login', { ...log });
+  
+        if (data.usertype) {
+          Navigate('/' + data.usertype.toLowerCase());
+        } else if (data.error) {
+          setError("Invalid login."); // Set the error message
         }
+      } catch (err) {
+        console.log(err);
+      }
     }
+  
+  
+    
     return( 
     <>
     <nav className="navbar navbar-expand-md navbar-light bg-light">
@@ -26,25 +37,11 @@ export default function Login(){
         </button>
         <Link className="navbar-brand" to="/">BPMS</Link>
         <div className="collapse navbar-collapse" id="navbarToggler"></div>
-        <ul className="container-fluid justify-content-center navbar-nav me-auto mb-2 mb-lg-0">
+        <ul className="container-fluid justify-content-end navbar-nav me-auto mb-2 mb-lg-0">
         <li className="nav-item">
-            <NavLink className="nav-link link" to="/login">Login</NavLink>
-            </li>
-            <li className="nav-item">
-            <NavLink className="nav-link link" to="/user/home">Home</NavLink>
-            </li>
-            <li className="nav-item">
-            <NavLink className="nav-link link" to="/user/reportbug">Report Bug</NavLink>
-            </li>
-            <li className="nav-item">
-            <NavLink className="nav-link link" to="/user/patch">Patches</NavLink>
+            <NavLink className="nav-link link" to="/signup">Sign Up</NavLink>
             </li>
         </ul>
-        {/* <div className="nav-item ms-auto">
-        <span class="user-name fw-bold">
-          USER
-        </span>
-      </div> */}
     </div>
     </nav>
     <div className="container-fluid">
@@ -63,8 +60,11 @@ export default function Login(){
                 <input type="email" className="form-control" id="Username" placeholder="Enter E-mail..." onChange={(e)=>setLog({...log,email:e.target.value})}/>
                 <p id="emailred" className="outred fs-6 fw-lighter"></p>
                 <label className="fw-bold">Password :</label>
-                <input type="password" className="form-control" id="Password" placeholder="Enter password..." onChange={(e)=>setLog({...log,pass:e.target.value})}/>
+                <input type="password" className="form-control" id="Password" placeholder="Enter password..." onChange={(e)=>setLog({...log,password:e.target.value})}/>
                 <p id="passred" className="outred fs-6 fw-lighter"></p>
+                {error &&(<div className="error-message">
+                    <p>{error}</p>
+                </div>)}
                 <div className="d-flex justify-content-end">
                     <p className="h6 fw-lighter">Don't have an Account?<Link className="log-link fw-lighter" to="/signup"> Sign Up</Link></p>
                 </div>

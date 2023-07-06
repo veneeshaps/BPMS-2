@@ -43,7 +43,8 @@ export default function PatchRequest(){
     const Request=async(e)=>{
         e.preventDefault();
         const {bugs,features} = getArray();
-        await contract.methods.requestPatch(patch.name,patch.description,bugs,features).send({from: account });
+        const transaction = await contract.methods.requestPatch(patch.name,patch.description,bugs,features).send({from: account });
+        console.log(transaction);
         window.location.reload(false);
     }
     const connectContract=async()=>{

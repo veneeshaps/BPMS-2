@@ -56,7 +56,7 @@ export default function Patch(){
             <div className="collapse navbar-collapse" id="navbarToggler"></div>
             <ul className="container-fluid justify-content-center navbar-nav me-auto mb-2 mb-lg-0">
                 <li className="nav-item">
-                <NavLink className="nav-link link" to="/user/home">Home</NavLink>
+                <NavLink className="nav-link link" to="/user">Home</NavLink>
                 </li>
                 <li className="nav-item">
                 <NavLink className="nav-link link" to="/user/reportbug">Report Bug</NavLink>

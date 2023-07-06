@@ -32,7 +32,9 @@ export default function Deployment(){
     }
     const DeployRequest=async(e)=>{
         e.preventDefault();
-        await contract.methods.requestDeploy(patches[e.target.value][0],patches[e.target.value][1],patches[e.target.value][2],patches[e.target.value][3],patches[e.target.value][4]).send({from:account});
+        const transaction = await contract.methods.requestDeploy(patches[e.target.value][0],patches[e.target.value][1],patches[e.target.value][2],patches[e.target.value][3],patches[e.target.value][4]).send({from:account});
+        console.log(transaction);
+        window.location.reload(false);
     }
     useEffect(()=>{
         connectMetamask();connectContract();

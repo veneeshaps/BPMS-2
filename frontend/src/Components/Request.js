@@ -40,7 +40,8 @@ export default function Request(){
     const sendData=async(e)=>{
         e.preventDefault();
         console.log(bugs,features);
-        await contract.methods.addBugandFeature(bugs,features).send({from:account});
+        const transaction = await contract.methods.addBugandFeature(bugs,features).send({from:account});
+        console.log(transaction);
         // console.log("Request Made");
         window.alert("Request Made");
         window.location.reload(false);

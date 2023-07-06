@@ -13,7 +13,7 @@ export default function Home(){
             <NavLink className="nav-link link" to="/login">Login</NavLink>
             </li>
             <li className="nav-item">
-            <NavLink className="nav-link link" to="/user/home">Home</NavLink>
+            <NavLink className="nav-link link" to="/user">Home</NavLink>
             </li>
             <li className="nav-item">
             <NavLink className="nav-link link" to="/user/reportbug">Report Bug</NavLink>

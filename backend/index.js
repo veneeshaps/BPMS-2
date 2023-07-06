@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 mongoose.set('strictQuery',true);
 
 const UserBug = require('./Schema/userbug');
-
+const User = require('./Schema/user');
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -25,4 +25,22 @@ app.get("/bugreport",async(req,res)=>{
 app.post("/userbug",async(req,res)=>{
     const userbug = await UserBug.create({...req.body});
     res.send({status:"Bug Added"});
+})
+app.post("/login",async(req,res)=>{
+    const user = await User.find({...req.body});
+    if (user){
+        res.send({usertype:user.type})
+    }
+    else {
+        res.send({error:"no user found"})
+    }
+})
+app.post("/signup",async(req,res)=>{
+    const user = await User.create({...req.body})
+    if (user){
+        res.send({usertype:user.type})
+    }
+    else {
+        res.send({error:"role not added"})
+    }
 })

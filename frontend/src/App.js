@@ -1,4 +1,7 @@
+import React from "react"
 import {BrowserRouter as Router,Routes,Route} from 'react-router-dom';
+import Login from './Components/Login';
+import Signup from './Components/Signup';
 import Home from './Components/Home';
 import Bug from './Components/Bug';
 import Patch from './Components/Patch';
@@ -13,8 +16,10 @@ export default function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/login" element={<Login/>}/>
+        <Route path="/signup" element={<Signup/>}/>
         <Route path='/' element={<Home/>}/>
-        <Route path='/user/home' element={<Home/>}/>
+        <Route path='/user' element={<Home/>}/>
         <Route path='/user/reportbug' element={<Bug/>}/>
         <Route path='/user/patch' element={<Patch/>}/>
         <Route path='/reporter' element={<BReport/>}/>

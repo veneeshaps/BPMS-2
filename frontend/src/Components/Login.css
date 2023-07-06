@@ -1,0 +1,28 @@
+.log-welcome{
+    background-color: rgb(235, 235, 235);
+}
+.log-button{
+    color:white;
+    background-color: rgb(104,108,116);
+    border-radius: 15px;
+    min-width: 90px;
+}
+
+.log-button:hover{
+    color:rgb(104,108,116);
+    background-color: transparent;
+    border: 1px solid rgb(104,108,116);;
+    transition-duration: 0.3s;
+}
+
+.log-link{
+    color:rgb(104,108,116);
+    text-decoration: none;
+}
+.log-link:hover{
+    color:rgb(104,108,116);
+}
+
+.sign-card{
+    max-width:500px;
+}

@@ -28,6 +28,7 @@ struct PatchFile{
     string version;
     bool approved;
     bool deployed;
+    string cid;
 }
 
 contract PatchManagement {
@@ -111,8 +112,8 @@ contract PatchManagement {
         }
     }
 
-    function requestQA(string memory _name,string memory _desc,string[][] memory _bugs,string[][] memory _features,string memory _version)public{
-        check_patches.push(PatchFile({name:_name,description:_desc,bugs:_bugs,features:_features,version:_version,approved:false,deployed:false}));
+    function requestQA(string memory _name,string memory _desc,string[][] memory _bugs,string[][] memory _features,string memory _version,string memory _cid)public{
+        check_patches.push(PatchFile({name:_name,description:_desc,bugs:_bugs,features:_features,version:_version,approved:false,deployed:false,cid:_cid}));
         for (uint i=0;i<patches.length;i++){
             if(keccak256(abi.encodePacked(_name)) == keccak256(abi.encodePacked(patches[i].name))){
                 removePatch(i, patches);
@@ -120,8 +121,8 @@ contract PatchManagement {
         }
     }
 
-    function approvePatch(string memory _name,string memory _desc,string[][] memory _bugs,string[][] memory _features,string memory _version)public{
-        approved_patches.push((PatchFile({name:_name,description:_desc,bugs:_bugs,features:_features,version:_version,approved:true,deployed:false})));
+    function approvePatch(string memory _name,string memory _desc,string[][] memory _bugs,string[][] memory _features,string memory _version,string memory _cid)public{
+        approved_patches.push((PatchFile({name:_name,description:_desc,bugs:_bugs,features:_features,version:_version,approved:true,deployed:false,cid:_cid})));
         for (uint i=0;i<check_patches.length;i++){
             if(keccak256(abi.encodePacked(_name)) == keccak256(abi.encodePacked(check_patches[i].name))){
                 removePatchFile(i, check_patches);
@@ -129,8 +130,8 @@ contract PatchManagement {
         }
     }
 
-    function rejectPatch(string memory _name,string memory _desc,string[][] memory _bugs,string[][] memory _features,string memory _version)public{
-        rejected_patches.push((PatchFile({name:_name,description:_desc,bugs:_bugs,features:_features,version:_version,approved:false,deployed:false})));
+    function rejectPatch(string memory _name,string memory _desc,string[][] memory _bugs,string[][] memory _features,string memory _version,string memory _cid)public{
+        rejected_patches.push((PatchFile({name:_name,description:_desc,bugs:_bugs,features:_features,version:_version,approved:false,deployed:false,cid:_cid})));
         for (uint i=0;i<check_patches.length;i++){
             if(keccak256(abi.encodePacked(_name)) == keccak256(abi.encodePacked(check_patches[i].name))){
                 removePatchFile(i, check_patches);
@@ -144,14 +145,14 @@ contract PatchManagement {
         }
     }
     
-    function requestDeploy(string memory _name,string memory _desc,string[][] memory _bugs,string[][] memory _features,string memory _version)public {
-        deployed_patches.push((PatchFile({name:_name,description:_desc,bugs:_bugs,features:_features,version:_version,approved:true,deployed:true})));
+    function requestDeploy(string memory _name,string memory _desc,string[][] memory _bugs,string[][] memory _features,string memory _version,string memory _cid)public {
+        deployed_patches.push((PatchFile({name:_name,description:_desc,bugs:_bugs,features:_features,version:_version,approved:true,deployed:true,cid:_cid})));
         for (uint i=0;i<approved_patches.length;i++){
             if(keccak256(abi.encodePacked(_name)) == keccak256(abi.encodePacked(approved_patches[i].name))){
                 removePatchFile(i, approved_patches);
             }
         }
-        approved_patches.push((PatchFile({name:_name,description:_desc,bugs:_bugs,features:_features,version:_version,approved:true,deployed:true})));
+        approved_patches.push((PatchFile({name:_name,description:_desc,bugs:_bugs,features:_features,version:_version,approved:true,deployed:true,cid:_cid})));
     }
 
     function requestedPatches()public view returns (PatchFile[] memory){

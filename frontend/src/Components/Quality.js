@@ -1,12 +1,15 @@
-import {Link,NavLink} from 'react-router-dom';
+import {Link,NavLink, useNavigate} from 'react-router-dom';
 import {useState,useEffect} from 'react';
-import {ABI,contractAddress,fileContent} from '../contract';
+import {ABI,contractAddress,StorageAPI} from '../contract';
 import Web3 from 'web3';
+import { Web3Storage } from 'web3.storage';
 
 export default function Quality(){
+    const Navigate = useNavigate();
     const [contract,setContract] = useState(null);
     const [account,setAccount] = useState(null);
     const [patches,setPatches] = useState(null);
+    const client = new Web3Storage({token: StorageAPI});
     const connectContract=async()=>{
         const web3 = new Web3(window.ethereum);
         const myContract = new web3.eth.Contract(ABI , contractAddress);
@@ -30,25 +33,52 @@ export default function Quality(){
         const data = await contract.methods.requestedPatches().call();
         setPatches(data);
     }
-    const approvePatch=async(e)=>{
+    const approvePatch=async(e,cid)=>{
         e.preventDefault();
-        const transaction = await contract.methods.approvePatch(patches[e.target.value][0],patches[e.target.value][1],patches[e.target.value][2],patches[e.target.value][3],patches[e.target.value][4]).send({from:account});
+        const transaction = await contract.methods.approvePatch(patches[e.target.value][0],patches[e.target.value][1],patches[e.target.value][2],patches[e.target.value][3],patches[e.target.value][4],cid).send({from:account});
         console.log(transaction);
     }
-    const rejectPatch=async(e)=>{
+    const rejectPatch=async(e,cid)=>{
         e.preventDefault();
-        const transaction = await contract.methods.rejectPatch(patches[e.target.value][0],patches[e.target.value][1],patches[e.target.value][2],patches[e.target.value][3],patches[e.target.value][4]).send({from:account});
+        const transaction = await contract.methods.rejectPatch(patches[e.target.value][0],patches[e.target.value][1],patches[e.target.value][2],patches[e.target.value][3],patches[e.target.value][4],cid).send({from:account});
         console.log(transaction);
     }
-    const downloadPatch=(e)=>{
-        if (fileContent) {
-            const element = document.createElement('a');
-            const file = new Blob([atob(fileContent)], {type: 'application/x-msdownload'});
-            element.href = URL.createObjectURL(file);
-            element.download = 'file.exe';
-            document.body.appendChild(element);
-            element.click();
+    const downloadPatch=async(e,cid)=>{
+        try {
+            const res = await client.get(cid);
+        
+            if (res.ok) {
+              const files = await res.files();
+        
+              files.forEach(async (file) => {
+                const response = await fetch(file.cid.toString());
+                const blob = await response.blob();
+        
+                // Create a temporary download link
+                const downloadLink = document.createElement('a');
+                downloadLink.href = URL.createObjectURL(blob);
+                downloadLink.download = file.name;
+        
+                // Programmatically trigger the download
+                downloadLink.click();
+        
+                // Clean up the temporary download link
+                URL.revokeObjectURL(downloadLink.href);
+                downloadLink.remove();
+              });
+        
+              console.log('Files downloaded successfully!');
+            } else {
+              console.error('Error retrieving files:', res.status, res.statusText);
+            }
+          } catch (error) {
+            console.error('Error downloading files:', error);
           }
+    }
+    const LogOut = async(e)=>{
+        localStorage.removeItem('token');
+        Navigate('/login');
+        window.location.reload(true);
     }
     useEffect(()=>{
         connectMetamask();connectContract();
@@ -61,7 +91,7 @@ export default function Quality(){
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
             </button>
-            <Link className="navbar-brand" to="/">BPMS</Link>
+            <Link className="navbar-brand" to="/">BPMS<span className='ms-4 fw-bold fs-5 text-decoration-underline'>Quality Checker</span></Link>
             <div className="collapse navbar-collapse" id="navbarToggler"></div>
             <ul className="container-fluid justify-content-center navbar-nav me-auto mb-2 mb-lg-0">
                 <li className="nav-item">
@@ -71,10 +101,10 @@ export default function Quality(){
                 <NavLink className="nav-link link" to="/qa/previous">Previous Requests</NavLink>
                 </li>
             </ul>
-            <div className="nav-item ms-auto">
-        <span class="user-name fw-bold">
-          QUALITY CHECKER
-        </span>
+            <div className="nav-item col-1">
+        <button class="user-name fw-bold" onClick={e=>LogOut(e)}>
+          Log Out
+        </button>
       </div>
         </div>
         </nav>
@@ -105,9 +135,9 @@ export default function Quality(){
                                 {row.features.map(feature=><>{feature[0]} </>)}
                                 </td>
                                 <td>{row.version}</td>
-                                <td><button onClick = {e=>downloadPatch(e)} className='btn-sm btn-dark'>Download</button></td>
-                                <td><button className='btn-sm btn-success me-2' value={index} onClick={e=>approvePatch(e)}>Approve</button>
-                                <button className='btn-sm btn-danger' value={index} onClick={e=>rejectPatch(e)}>Reject</button></td>
+                                <td><button onClick = {e=>downloadPatch(e,row[7])} className='btn-sm btn-dark'>Download</button></td>
+                                <td><button className='btn-sm btn-success me-2' value={index} onClick={e=>approvePatch(e,row[7])}>Approve</button>
+                                <button className='btn-sm btn-danger' value={index} onClick={e=>rejectPatch(e,row[7])}>Reject</button></td>
                             </tr>);
                         }):<>No Patches were Found.</>
                     }</tbody>

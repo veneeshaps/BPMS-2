@@ -15,9 +15,10 @@ export default function Login() {
       event.preventDefault();
       try {
         const { data } = await axios.post('http://localhost:3001/login', { ...log });
-  
+        localStorage.setItem('token',data.tok);
         if (data.usertype) {
           Navigate('/' + data.usertype.toLowerCase());
+          window.location.reload(true);
         } else if (data.error) {
           setError("Invalid login."); // Set the error message
         }

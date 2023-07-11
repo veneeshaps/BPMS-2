@@ -1,8 +1,9 @@
-import {Link,NavLink} from 'react-router-dom';
+import {Link,NavLink, useNavigate} from 'react-router-dom';
 import {useState,useEffect} from 'react';
 import Web3 from 'web3';
 import {ABI,contractAddress} from '../contract';
 export default function PatchRequest(){
+    const Navigate = useNavigate();
     const [bugs,setBugs] = useState([]);
     const [features,setFeatures] = useState([]);
     const [patch,setPatch] = useState({
@@ -40,13 +41,52 @@ export default function PatchRequest(){
         }
         return {bugs:selected_bugs,features:selected_features};
     }
+    const LogOut = async(e)=>{
+        localStorage.removeItem('token');
+        Navigate('/login');
+        window.location.reload(true);
+    }
     const Request=async(e)=>{
         e.preventDefault();
         const {bugs,features} = getArray();
-        const transaction = await contract.methods.requestPatch(patch.name,patch.description,bugs,features).send({from: account });
-        console.log(transaction);
+        const result = await contract.methods.requestPatch(patch.name,patch.description,bugs,features).send({from: account });
+        console.log(result);
         window.location.reload(false);
+    //     const result = await contract.methods
+    //     .requestDeploy(
+    //       patches[e.target.value][0],
+    //       patches[e.target.value][1],
+    //       patches[e.target.value][2],
+    //       patches[e.target.value][3],
+    //       patches[e.target.value][4]
+    //     )
+    //     .send({ from: account });
+    //   console.log(result);
+    //   handleSubmit(result.from, result.to, result.gasUsed, result.transactionHash);
+    // }
+    // const handleSubmit = async (from, to, gasUsed, id) => {
+    //     const UserTransction = {
+    //       account: account,
+    //       id: id,
+    //       description: 'Deploying Patch',
+    //       from: from,
+    //       to: to,
+    //       gasUsed: gasUsed,
+    //       token: localStorage.getItem('token'),
+    //     };
+      
+    //     try {
+    //       const response = await axios.post(
+    //         'http://localhost:3001/api/transcation',
+    //         UserTransction
+    //       );
+    //       if (response) console.log(response);
+    //     } catch (error) {
+    //       console.log('error: ', error);
+    //     }
     }
+
+    
     const connectContract=async()=>{
         const web3 = new Web3(window.ethereum);
         const myContract = new web3.eth.Contract(ABI , contractAddress);
@@ -79,7 +119,7 @@ export default function PatchRequest(){
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
             </button>
-            <Link className="navbar-brand" to="/">BPMS</Link>
+            <Link className="navbar-brand" to="/">BPMS<span className='ms-4 fw-bold fs-5 text-decoration-underline'>Admin</span></Link>
             <div className="collapse navbar-collapse" id="navbarToggler"></div>
             <ul className="container-fluid justify-content-center navbar-nav me-auto mb-2 mb-lg-0">
                 <li className="nav-item">
@@ -89,10 +129,10 @@ export default function PatchRequest(){
                 <NavLink className="nav-link link" to="/admin/deployment">Deploy Patch</NavLink>
                 </li>
             </ul>
-            <div className="nav-item ms-auto">
-        <span class="user-name fw-bold">
-          ADMIN
-        </span>
+            <div className="nav-item col-1">
+        <button class="user-name fw-bold" onClick={e=>LogOut(e)}>
+          Log Out
+        </button>
       </div>
         </div>
         </nav>

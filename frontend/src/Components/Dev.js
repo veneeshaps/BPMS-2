@@ -1,7 +1,9 @@
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
-import { ABI, contractAddress } from '../contract';
+import { ABI, contractAddress,StorageAPI } from '../contract';
+import {Web3Storage} from 'web3.storage';
 import Web3 from 'web3';
+import axios from "axios";
 // import { Web3Storage } from 'https://cdn.jsdelivr.net/npm/web3.storage/dist/bundle.esm.min.js';
 const UploadButton = ({ onClick }) => {
     const fileInputRef = useRef(null);
@@ -30,20 +32,26 @@ const UploadButton = ({ onClick }) => {
     );
 };
 export default function Dev() {
+    const Navigate = useNavigate();
     const [contract, setContract] = useState(null);
     const [account, setAccount] = useState(null);
     const [patches, setPatches] = useState(null);
-    const [patchDetails, setPatchDetails] = useState([]);
+    // const [patchDetails, setPatchDetails] = useState([]);
     const [file, setFile] = useState(null);
     // const [data,setData] = useState([]);
     // const client=useRef(null);
+    const client  = new Web3Storage({token: StorageAPI});
     const connectContract = async () => {
         const web3 = new Web3(window.ethereum);
         const myContract = new web3.eth.Contract(ABI, contractAddress);
         setContract(myContract);
         console.log("Contract Connected");
     }
-
+    const LogOut = async(e)=>{
+        localStorage.removeItem('token');
+        Navigate('/login');
+        window.location.reload(true);
+    }
     const connectMetamask = async () => {
         try {
             if (window.ethereum) {
@@ -58,14 +66,7 @@ export default function Dev() {
         }
     }
     const FileChange = (e) => {
-        const file = e.target.files[0];
-        const reader = new FileReader();
-        reader.readAsArrayBuffer(file);
-        reader.onload = () => {
-            const fileBuffer = reader.result
-            const fileBytes = new Uint8Array(fileBuffer);
-            setFile(fileBytes);
-        };
+        setFile(e.target.files[0])
     };
 
     // const getPatches = async () => {
@@ -89,12 +90,50 @@ export default function Dev() {
     
     const requestQA = async (e) => {
         e.preventDefault();
+        let cid ='';
+        await client.put([file],{onRootCidReady: (localCid) => {
+                cid = localCid;
+        }});
         const version = document.getElementById(patches[e.target.value][0]).value;
-        console.log(file);
-        const transaction = await contract.methods.requestQA(patches[e.target.value][0], patches[e.target.value][1], patches[e.target.value][2], patches[e.target.value][3], version).send({ from: account });
-        console.log(transaction);
-        window.location.reload(false);
+        console.log(patches[e.target.value][0],
+            patches[e.target.value][1],
+            patches[e.target.value][2],
+            patches[e.target.value][3],
+            version,
+            cid)
+        const result = await contract.methods
+        .requestQA(
+          patches[e.target.value][0],
+          patches[e.target.value][1],
+          patches[e.target.value][2],
+          patches[e.target.value][3],
+          version,
+          cid
+        )
+        .send({ from: account});
+    //   handleSubmit(result.from, result.to, result.gasUsed, result.transactionHash);
     }
+    // const handleSubmit = async (from, to, gasUsed, id) => {
+    //     const UserTransction = {
+    //       account: account,
+    //       id: id,
+    //       description: 'Deploying Patch',
+    //       from: from,
+    //       to: to,
+    //       gasUsed: gasUsed,
+    //       token: localStorage.getItem('token'),
+    //     };
+      
+    //     try {
+    //       const response = await axios.post(
+    //         'http://localhost:3001/api/transcation',
+    //         UserTransction
+    //       );
+    //       if (response) console.log(response);
+    //     } catch (error) {
+    //       console.log('error: ', error);
+    //     }
+    // }
     useEffect(() => {
         connectMetamask(); connectContract();
     //     console.log('> 📦 creating web3.storage client');
@@ -126,17 +165,17 @@ export default function Dev() {
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
-                    <Link className="navbar-brand" to="/">BPMS</Link>
+                    <Link className="navbar-brand" to="/">BPMS<span className='ms-4 fw-bold fs-5 text-decoration-underline'>Developer</span></Link>
                     <div className="collapse navbar-collapse" id="navbarToggler"></div>
                     <ul className="container-fluid justify-content-center navbar-nav me-auto mb-2 mb-lg-0">
                         <li className="nav-item">
                             <NavLink className="nav-link link" to="/dev/patch">Home</NavLink>
                         </li>
                     </ul>
-                    <div className="nav-item ms-auto">
-                        <span class="user-name fw-bold">
-                            DEVELOPER
-                        </span>
+                    <div className="nav-item col-1">
+                        <button class="user-name fw-bold" onClick={e=>LogOut(e)}>
+                            Log Out
+                        </button>
                     </div>
                 </div>
             </nav>
@@ -167,7 +206,7 @@ export default function Dev() {
                                             {row.features.map(feature => <>{feature[0]} </>)}
                                         </td>
                                         <td><input className='form-control-sm' type='text' id={row.name} placeholder='Version Number' /></td>
-                                        <td><input className="form-control form-control-sm" id="formFileSm" type="file" onChange={e => FileChange(e)} /></td>
+                                        <td><input className="form-control form-control-sm" id={index} type="file" onChange={e => FileChange(e)} /></td>
                                         <td>
                                             {/* <UploadButton onClick={(files) => handleUpload(row, files)} />
                                             {row.link && (

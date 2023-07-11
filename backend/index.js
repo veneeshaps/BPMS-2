@@ -2,10 +2,11 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 mongoose.set('strictQuery',true);
-
+const jwt = require('jsonwebtoken');
 const UserBug = require('./Schema/userbug');
 const User = require('./Schema/user');
 const bcrypt = require('bcrypt')
+const UserTransction = require('./Schema/transactions')
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -29,6 +30,7 @@ app.post("/userbug",async(req,res)=>{
 })
 
 app.post("/login", async (req, res) => {
+
     const user = await User.findOne({ email: req.body.email });
   
     if (user) {
@@ -38,7 +40,9 @@ app.post("/login", async (req, res) => {
       );
   
       if (isPasswordValid) {
-        res.send({ usertype: user.type });
+        const tokenPayLoad = {_id: user._id, email: user.email, role: user.type}
+        const token = generateAuthToken(tokenPayLoad);
+        res.send({tok: token , usertype: user.type });
       } else {
         res.send({ error: "Invalid login" }); 
       }
@@ -82,3 +86,52 @@ app.post("/signup",async(req,res)=>{
         res.send(errors);
     }
 })
+
+app.post('/api/transcation', async (req,res)=>{
+  try{
+    console.log("Inside Backend");
+    const emailId = jwt.verify(req.body.token, "Veneeshaisniceeeee").email;
+    const roleC = jwt.verify(req.body.token, "Veneeshaisniceeeee").role;
+    console.log("Email: ",emailId)
+    console.log("Email: ",roleC)
+    console.log(req.body);
+      await UserTransction.create({
+          account : req.body.account,
+          id : req.body.id,
+          description: req.body.description,
+          from : req.body.from,
+          to : req.body.to,
+          gasUsed : req.body.gasUsed,
+          email : emailId,
+          role : roleC,
+      })
+      res.json("Transcation Stored")
+      console.log("Done");
+  }
+  catch (err) {
+      console.log(err)
+      res.json({
+          status: 'Error',error : 'Error'
+      })
+  }
+})
+
+app.get('/api/getTranscation', (req, res) => {
+  UserTransction.find()
+    .exec()
+    .then((allUserTranscationDetails) => {
+      console.log(allUserTranscationDetails); // Log the retrieved documents
+      return res.status(200).json(allUserTranscationDetails); // Send the documents as a JSON response
+    })
+    .catch((error) => {
+      console.error('Error querying user-transcation-details:', error);
+      return res.status(500).json({ error: 'Internal server error' });
+    });
+});
+
+const generateAuthToken = (payload)=> {
+  const token= jwt.sign(payload,"Veneeshaisniceeeee",{
+    expiresIn: "7d",
+  });
+  return token;
+};

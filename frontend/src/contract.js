@@ -513,6 +513,6 @@ export const ABI = [
 		"type": "function"
 	}
 ];
-export const contractAddress = "0xC84F85701AB48E9332E33b2057AFc60C3921a155";
+export const contractAddress = "0xb4f20F23F1a5A3c3c1ed4abA7d85E5586797e99c";
 
 export const StorageAPI = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDY1RThjNTc4QzVCNjE2OWU2RDU0MzI5ZWI5NUU1Q2ZiRDE1OGUzOEMiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2ODM3MDAxODk4ODgsIm5hbWUiOiJ2ZW4ifQ.mHwS7fK2qbgFs9GwbsN-H0Ekj39xApSajQEHPsszFo0";

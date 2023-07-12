@@ -1,13 +1,15 @@
 import {Link,NavLink, useNavigate} from 'react-router-dom';
 import {useState,useEffect} from 'react';
 import Web3 from 'web3';
-import {ABI,contractAddress} from '../contract';
+import {ABI,contractAddress,StorageAPI} from '../contract';
+import {Web3Storage} from 'web3.storage';
 import axios from "axios";
 export default function Deployment(){
   const Navigate = useNavigate();
     const [contract,setContract] = useState(null);
     const [account,setAccount] = useState(null);
     const [patches,setPatches] = useState(null);
+    const client = new Web3Storage({token: StorageAPI})
     const connectContract=async()=>{
         const web3 = new Web3(window.ethereum);
         const myContract = new web3.eth.Contract(ABI , contractAddress);
@@ -32,6 +34,38 @@ export default function Deployment(){
         // const rejected = await contract.methods.rejectedPatches().call();
          setPatches([...approved]);
     }
+    const downloadPatch=async(e,cid)=>{
+      try {
+          const res = await client.get(cid);
+      
+          if (res.ok) {
+            const files = await res.files();
+      
+            files.forEach(async (file) => {
+              const response = await fetch(file.cid.toString());
+              const blob = await response.blob();
+      
+              // Create a temporary download link
+              const downloadLink = document.createElement('a');
+              downloadLink.href = URL.createObjectURL(blob);
+              downloadLink.download = file.name;
+      
+              // Programmatically trigger the download
+              downloadLink.click();
+      
+              // Clean up the temporary download link
+              URL.revokeObjectURL(downloadLink.href);
+              downloadLink.remove();
+            });
+      
+            console.log('Files downloaded successfully!');
+          } else {
+            console.error('Error retrieving files:', res.status, res.statusText);
+          }
+        } catch (error) {
+          console.error('Error downloading files:', error);
+        }
+  }
     const DeployRequest = async (e,cid) => {
         e.preventDefault();
         const result = await contract.methods
@@ -85,7 +119,8 @@ export default function Deployment(){
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
             </button>
-            <Link className="navbar-brand" to="/">BPMS<span className='ms-4 fw-bold fs-5 text-decoration-underline'>Admin</span></Link>
+            <Link className="navbar-brand" to="/">BPMS</Link>
+            <span className='ms-4 fw-bold fs-5 text-decoration-underline'>Admin</span>
             <div className="collapse navbar-collapse" id="navbarToggler"></div>
             <ul className="container-fluid justify-content-center navbar-nav me-auto mb-2 mb-lg-0">
                 <li className="nav-item">
@@ -113,6 +148,7 @@ export default function Deployment(){
                 <th>Bugs and Features</th>
                 <th>Version</th>
                 <th>Approve/Reject</th>
+                <th>Download</th>
                 <th>Deploy</th>
                 </>
             :<></>
@@ -129,6 +165,7 @@ export default function Deployment(){
                                 {row.features.map(feature=><>{feature[0]} </>)}
                                 </td>
                                 <td>{row.version}</td>
+                                <td><button  onClick  = {e=>downloadPatch(e,row[7])} className='btn-sm btn-dark'>Download</button></td>
                                 <td>{row.approved?<span className='text-success fw-bold'>Approved</span>:<span className='text-danger fw-bold'>Rejected</span>}</td>
                                 <td>{row.deployed?<span className='text-success fw-bold'>Deployed</span>:<button value={index} className='btn-sm btn-dark' onClick={e=>DeployRequest(e,row[7])}>Deploy</button>}</td>
                             </tr>);

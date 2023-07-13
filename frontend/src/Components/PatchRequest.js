@@ -2,6 +2,8 @@ import {Link,NavLink, useNavigate} from 'react-router-dom';
 import {useState,useEffect} from 'react';
 import Web3 from 'web3';
 import {ABI,contractAddress} from '../contract';
+import axios from 'axios';
+
 export default function PatchRequest(){
     const Navigate = useNavigate();
     const [bugs,setBugs] = useState([]);
@@ -51,39 +53,8 @@ export default function PatchRequest(){
         const {bugs,features} = getArray();
         const result = await contract.methods.requestPatch(patch.name,patch.description,bugs,features).send({from: account });
         console.log(result);
-        window.location.reload(false);
-    //     const result = await contract.methods
-    //     .requestDeploy(
-    //       patches[e.target.value][0],
-    //       patches[e.target.value][1],
-    //       patches[e.target.value][2],
-    //       patches[e.target.value][3],
-    //       patches[e.target.value][4]
-    //     )
-    //     .send({ from: account });
-    //   console.log(result);
-    //   handleSubmit(result.from, result.to, result.gasUsed, result.transactionHash);
-    // }
-    // const handleSubmit = async (from, to, gasUsed, id) => {
-    //     const UserTransction = {
-    //       account: account,
-    //       id: id,
-    //       description: 'Deploying Patch',
-    //       from: from,
-    //       to: to,
-    //       gasUsed: gasUsed,
-    //       token: localStorage.getItem('token'),
-    //     };
-      
-    //     try {
-    //       const response = await axios.post(
-    //         'http://localhost:3001/api/transcation',
-    //         UserTransction
-    //       );
-    //       if (response) console.log(response);
-    //     } catch (error) {
-    //       console.log('error: ', error);
-    //     }
+        handleSubmit(result.from, result.to, result.gasUsed, result.transactionHash);
+        // window.location.reload(false);
     }
 
     
@@ -106,6 +77,24 @@ export default function PatchRequest(){
             console.log(error);
         }
     }
+    const handleSubmit = async (from, to, gasUsed, id) => {
+            const UserTransaction = {
+              account: account,
+              id: id,
+              description: 'Requesting Patch',
+              from: from,
+              to: to,
+              gasUsed: gasUsed,
+              token: localStorage.getItem('token'),
+            };
+        
+            try {
+              const response = await axios.post('http://localhost:3001/api/transaction', UserTransaction);
+              if (response) console.log(response);
+            } catch (error) {
+              console.log('Error: ', error);
+            }
+          };
     useEffect(()=>{
         connectContract();
         connectMetamask();
@@ -204,3 +193,4 @@ export default function PatchRequest(){
         </>
     );
 }
+

@@ -547,11 +547,11 @@
 	},
 	"sources": {
 		"blc.sol": {
-			"keccak256": "0x9afee6fd49b0dccfac6d149adfedeb5223b019c2082b7bf5ee9c509003ca7e30",
+			"keccak256": "0xceabf9e6364a5adf6376407f78d6dac4afb19acb943cbc6f26afbbdf1675bc9a",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://6c7da512d2fec256ffb3e35c790ad9ecb75feab6f73704c43ecd7f8c9d70e623",
-				"dweb:/ipfs/QmQzF1jKrCyp5D17inLawmQ3dDaxttrPr7u1GA5DPbZFb7"
+				"bzz-raw://80aa651fd983fb5d99fe06cc5d0ce9fafe3f5a30d22c6eab03ebe0875f046fe5",
+				"dweb:/ipfs/QmfNNE6kBwpNoriwt6s6y5F6njXu4qpZTRTkip1uxHk97A"
 			]
 		}
 	},

@@ -104,7 +104,7 @@ export default function Deployment(){
       
         try {
           const response = await axios.post(
-            'http://localhost:3001/api/transcation',
+            'http://localhost:3001/api/transaction',
             UserTransction
           );
           if (response) console.log(response);

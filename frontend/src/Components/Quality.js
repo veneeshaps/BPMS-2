@@ -1,89 +1,230 @@
-import {Link,NavLink, useNavigate} from 'react-router-dom';
-import {useState,useEffect} from 'react';
-import {ABI,contractAddress,StorageAPI} from '../contract';
+// import {Link,NavLink, useNavigate} from 'react-router-dom';
+// import {useState,useEffect} from 'react';
+// import {ABI,contractAddress,StorageAPI} from '../contract';
+// import Web3 from 'web3';
+// import { Web3Storage } from 'web3.storage';
+// import axios from 'axios';
+
+// export default function Quality(){
+//     const Navigate = useNavigate();
+//     const [contract,setContract] = useState(null);
+//     const [account,setAccount] = useState(null);
+//     const [patches,setPatches] = useState(null);
+//     const client = new Web3Storage({token: StorageAPI});
+//     const connectContract=async()=>{
+//         const web3 = new Web3(window.ethereum);
+//         const myContract = new web3.eth.Contract(ABI , contractAddress);
+//         setContract(myContract);
+//         console.log("Contract Connected");
+//     }
+//     const connectMetamask=async()=>{
+//         try{
+//             if(window.ethereum){
+//                 const web3 = new Web3(window.ethereum);
+//                 await window.ethereum.request({method:"eth_requestAccounts"});
+//                 const accounts = await web3.eth.getAccounts();
+//                 setAccount(accounts[0]);
+//                 console.log("Metamask Connected");
+//             }
+//         }catch(error){
+//             console.log(error);
+//         }
+//     }
+//     const requestedPatches=async()=>{
+//         const data = await contract.methods.requestedPatches().call();
+//         setPatches(data);
+//     }
+//     const approvePatch=async(e,cid)=>{
+//         e.preventDefault();
+//         const transaction = await contract.methods.approvePatch(patches[e.target.value][0],patches[e.target.value][1],patches[e.target.value][2],patches[e.target.value][3],patches[e.target.value][4],cid).send({from:account});
+//         console.log(transaction);
+//     }
+//     const rejectPatch=async(e,cid)=>{
+//         e.preventDefault();
+//         const transaction = await contract.methods.rejectPatch(patches[e.target.value][0],patches[e.target.value][1],patches[e.target.value][2],patches[e.target.value][3],patches[e.target.value][4],cid).send({from:account});
+//         console.log(transaction);
+//     }
+//     const downloadPatch=async(e,cid)=>{
+//         try {
+//             const res = await client.get(cid);
+        
+//             if (res.ok) {
+//               const files = await res.files();
+        
+//               files.forEach(async (file) => {
+//                 const response = await fetch(file.cid.toString());
+//                 const blob = await response.blob();
+        
+//                 // Create a temporary download link
+//                 const downloadLink = document.createElement('a');
+//                 downloadLink.href = URL.createObjectURL(blob);
+//                 downloadLink.download = file.name;
+        
+//                 // Programmatically trigger the download
+//                 downloadLink.click();
+        
+//                 // Clean up the temporary download link
+//                 URL.revokeObjectURL(downloadLink.href);
+//                 downloadLink.remove();
+//               });
+        
+//               console.log('Files downloaded successfully!');
+//             } else {
+//               console.error('Error retrieving files:', res.status, res.statusText);
+//             }
+//           } catch (error) {
+//             console.error('Error downloading files:', error);
+//           }
+//     }
+//     const LogOut = async(e)=>{
+//         localStorage.removeItem('token');
+//         Navigate('/login');
+//         window.location.reload(true);
+//     }
+//     useEffect(()=>{
+//         connectMetamask();connectContract();
+//     },[]);
+//     requestedPatches();
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { ABI, contractAddress, StorageAPI } from '../contract';
 import Web3 from 'web3';
 import { Web3Storage } from 'web3.storage';
+import axios from 'axios';
 
-export default function Quality(){
-    const Navigate = useNavigate();
-    const [contract,setContract] = useState(null);
-    const [account,setAccount] = useState(null);
-    const [patches,setPatches] = useState(null);
-    const client = new Web3Storage({token: StorageAPI});
-    const connectContract=async()=>{
+export default function Quality() {
+  const Navigate = useNavigate();
+  const [contract, setContract] = useState(null);
+  const [account, setAccount] = useState(null);
+  const [patches, setPatches] = useState(null);
+  const client = new Web3Storage({ token: StorageAPI });
+
+  const connectContract = async () => {
+    const web3 = new Web3(window.ethereum);
+    const myContract = new web3.eth.Contract(ABI, contractAddress);
+    setContract(myContract);
+    console.log('Contract Connected');
+  };
+
+  const connectMetamask = async () => {
+    try {
+      if (window.ethereum) {
         const web3 = new Web3(window.ethereum);
-        const myContract = new web3.eth.Contract(ABI , contractAddress);
-        setContract(myContract);
-        console.log("Contract Connected");
+        await window.ethereum.request({ method: 'eth_requestAccounts' });
+        const accounts = await web3.eth.getAccounts();
+        setAccount(accounts[0]);
+        console.log('Metamask Connected');
+      }
+    } catch (error) {
+      console.log(error);
     }
-    const connectMetamask=async()=>{
-        try{
-            if(window.ethereum){
-                const web3 = new Web3(window.ethereum);
-                await window.ethereum.request({method:"eth_requestAccounts"});
-                const accounts = await web3.eth.getAccounts();
-                setAccount(accounts[0]);
-                console.log("Metamask Connected");
-            }
-        }catch(error){
-            console.log(error);
-        }
+  };
+
+  const requestedPatches = async () => {
+    const data = await contract.methods.requestedPatches().call();
+    setPatches(data);
+  };
+
+  const approvePatch = async (e, cid) => {
+    e.preventDefault();
+    const transaction = await contract.methods
+      .approvePatch(
+        patches[e.target.value][0],
+        patches[e.target.value][1],
+        patches[e.target.value][2],
+        patches[e.target.value][3],
+        patches[e.target.value][4],
+        cid
+      )
+      .send({ from: account });
+    console.log(transaction);
+    handleSubmit(transaction.from, transaction.to, transaction.gasUsed, transaction.transactionHash);
+  };
+
+  const rejectPatch = async (e, cid) => {
+    e.preventDefault();
+    const transaction = await contract.methods
+      .rejectPatch(
+        patches[e.target.value][0],
+        patches[e.target.value][1],
+        patches[e.target.value][2],
+        patches[e.target.value][3],
+        patches[e.target.value][4],
+        cid
+      )
+      .send({ from: account });
+    console.log(transaction);
+    handleSubmit(transaction.from, transaction.to, transaction.gasUsed, transaction.transactionHash);
+  };
+
+  const downloadPatch = async (e, cid) => {
+    try {
+      const res = await client.get(cid);
+
+      if (res.ok) {
+        const files = await res.files();
+
+        files.forEach(async (file) => {
+          const response = await fetch(file.cid.toString());
+          const blob = await response.blob();
+
+          // Create a temporary download link
+          const downloadLink = document.createElement('a');
+          downloadLink.href = URL.createObjectURL(blob);
+          downloadLink.download = file.name;
+
+          // Programmatically trigger the download
+          downloadLink.click();
+
+          // Clean up the temporary download link
+          URL.revokeObjectURL(downloadLink.href);
+          downloadLink.remove();
+        });
+
+        console.log('Files downloaded successfully!');
+      } else {
+        console.error('Error retrieving files:', res.status, res.statusText);
+      }
+    } catch (error) {
+      console.error('Error downloading files:', error);
     }
-    const requestedPatches=async()=>{
-        const data = await contract.methods.requestedPatches().call();
-        setPatches(data);
+  };
+
+  const LogOut = async (e) => {
+    localStorage.removeItem('token');
+    Navigate('/login');
+    window.location.reload(true);
+  };
+
+  const handleSubmit = async (from, to, gasUsed, id) => {
+    const UserTransaction = {
+      account: account,
+      id: id,
+      description: 'Approving/Rejecting Patch',
+      from: from,
+      to: to,
+      gasUsed: gasUsed,
+      token: localStorage.getItem('token'),
+    };
+
+    try {
+      const response = await axios.post('http://localhost:3001/api/transaction', UserTransaction);
+      if (response) console.log(response);
+    } catch (error) {
+      console.log('Error: ', error);
     }
-    const approvePatch=async(e,cid)=>{
-        e.preventDefault();
-        const transaction = await contract.methods.approvePatch(patches[e.target.value][0],patches[e.target.value][1],patches[e.target.value][2],patches[e.target.value][3],patches[e.target.value][4],cid).send({from:account});
-        console.log(transaction);
-    }
-    const rejectPatch=async(e,cid)=>{
-        e.preventDefault();
-        const transaction = await contract.methods.rejectPatch(patches[e.target.value][0],patches[e.target.value][1],patches[e.target.value][2],patches[e.target.value][3],patches[e.target.value][4],cid).send({from:account});
-        console.log(transaction);
-    }
-    const downloadPatch=async(e,cid)=>{
-        try {
-            const res = await client.get(cid);
-        
-            if (res.ok) {
-              const files = await res.files();
-        
-              files.forEach(async (file) => {
-                const response = await fetch(file.cid.toString());
-                const blob = await response.blob();
-        
-                // Create a temporary download link
-                const downloadLink = document.createElement('a');
-                downloadLink.href = URL.createObjectURL(blob);
-                downloadLink.download = file.name;
-        
-                // Programmatically trigger the download
-                downloadLink.click();
-        
-                // Clean up the temporary download link
-                URL.revokeObjectURL(downloadLink.href);
-                downloadLink.remove();
-              });
-        
-              console.log('Files downloaded successfully!');
-            } else {
-              console.error('Error retrieving files:', res.status, res.statusText);
-            }
-          } catch (error) {
-            console.error('Error downloading files:', error);
-          }
-    }
-    const LogOut = async(e)=>{
-        localStorage.removeItem('token');
-        Navigate('/login');
-        window.location.reload(true);
-    }
-    useEffect(()=>{
-        connectMetamask();connectContract();
-    },[]);
+  };
+
+  useEffect(() => {
+    connectMetamask();
+    connectContract();
+  }, []);
+
+  useEffect(() => {
     requestedPatches();
+  }, [contract]);
+
+
     return(
         <>
         <nav className="navbar navbar-expand-md navbar-light bg-light">

@@ -112,8 +112,9 @@ export default function Bug() {
             <span className="navbar-toggler-icon"></span>
           </button>
           <Link className="navbar-brand" to="/">
-            BPMS<span className="ms-4 fw-bold fs-5 ">User</span>
+            BPMS
           </Link>
+          <span className="ms-4 fw-bold fs-5 text-decoration-underline ">User</span>
           <div className="collapse navbar-collapse" id="navbarToggler"></div>
           <ul className="container-fluid justify-content-center navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">

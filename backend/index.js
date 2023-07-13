@@ -87,7 +87,7 @@ app.post("/signup",async(req,res)=>{
     }
 })
 
-app.post('/api/transcation', async (req,res)=>{
+app.post('/api/transaction', async (req,res)=>{
   try{
     console.log("Inside Backend");
     const emailId = jwt.verify(req.body.token, "Veneeshaisniceeeee").email;

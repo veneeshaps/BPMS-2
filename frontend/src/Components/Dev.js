@@ -4,14 +4,10 @@ import { ABI, contractAddress,StorageAPI } from '../contract';
 import {Web3Storage} from 'web3.storage';
 import Web3 from 'web3';
 import axios from "axios";
-// import { Web3Storage } from 'https://cdn.jsdelivr.net/npm/web3.storage/dist/bundle.esm.min.js';
 const UploadButton = ({ onClick }) => {
     const fileInputRef = useRef(null);
 
-    // const handleUpload = () => {
-    //     const files = fileInputRef.current.files;
-    //     onClick(files);
-    // };
+
 
     const handleUpload = async () => {
         const files = fileInputRef.current.files;
@@ -36,10 +32,8 @@ export default function Dev() {
     const [contract, setContract] = useState(null);
     const [account, setAccount] = useState(null);
     const [patches, setPatches] = useState(null);
-    // const [patchDetails, setPatchDetails] = useState([]);
     const [file, setFile] = useState(null);
-    // const [data,setData] = useState([]);
-    // const client=useRef(null);
+  
     const client  = new Web3Storage({token: StorageAPI});
     const connectContract = async () => {
         const web3 = new Web3(window.ethereum);
@@ -69,24 +63,13 @@ export default function Dev() {
         setFile(e.target.files[0])
     };
 
-    // const getPatches = async () => {
-    //     const data = await contract.methods.patchDetails().call();
-    //     setPatchDetails(data);
-    //   };
+    
       
     const getPatches = async () => {
         const data = await contract.methods.patchDetails().call();
         setPatches(data);
     }
-    // const requestQA = async (e, patch) => {
-    //     e.preventDefault();
-    //     const versionInputId = patch[0];
-    //     const version = document.getElementById(versionInputId).value;
-    //     handleUpload(patch, version); // Pass the patch details and version to handleUpload
-    //     await contract.methods
-    //       .requestQA(patch[0], patch[1], patch[2], patch[3], version)
-    //       .send({ from: account });
-    //   };
+  
     
     const requestQA = async (e) => {
         e.preventDefault();
@@ -111,51 +94,31 @@ export default function Dev() {
           cid
         )
         .send({ from: account});
-    //   handleSubmit(result.from, result.to, result.gasUsed, result.transactionHash);
+        handleSubmit(result.from, result.to, result.gasUsed, result.transactionHash);
+   
     }
-    // const handleSubmit = async (from, to, gasUsed, id) => {
-    //     const UserTransction = {
-    //       account: account,
-    //       id: id,
-    //       description: 'Deploying Patch',
-    //       from: from,
-    //       to: to,
-    //       gasUsed: gasUsed,
-    //       token: localStorage.getItem('token'),
-    //     };
-      
-    //     try {
-    //       const response = await axios.post(
-    //         'http://localhost:3001/api/transcation',
-    //         UserTransction
-    //       );
-    //       if (response) console.log(response);
-    //     } catch (error) {
-    //       console.log('error: ', error);
-    //     }
-    // }
+    const handleSubmit = async (from, to, gasUsed, id) => {
+        const UserTransaction = {
+          account: account,
+          id: id,
+          description: 'Requesting Patch',
+          from: from,
+          to: to,
+          gasUsed: gasUsed,
+          token: localStorage.getItem('token'),
+        };
+    
+        try {
+          const response = await axios.post('http://localhost:3001/api/transaction', UserTransaction);
+          if (response) console.log(response);
+        } catch (error) {
+          console.log('Error: ', error);
+        }
+      };
+    
+  
     useEffect(() => {
         connectMetamask(); connectContract();
-    //     console.log('> 📦 creating web3.storage client');
-    //     const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDY1RThjNTc4QzVCNjE2OWU2RDU0MzI5ZWI5NUU1Q2ZiRDE1OGUzOEMiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2ODg0NjU3OTUwMTEsIm5hbWUiOiJrbWl0In0.4iWOlQMD9i6S7ymarg0UAuPU5J4MXRzDMlutrS46iO4';
-    //     client.current = new Web3Storage({ token });
-    // }, []);
-    // getPatches();
-    // const handleUpload = async (item, files) => {
-    //     console.log('> 🤖 chunking and hashing the files (in your browser!) to calculate the Content ID');
-    //     const cid = await client.current.put(files, {
-    //         onRootCidReady: (localCid) => {
-    //             console.log(`> 🔑 locally calculated Content ID: ${localCid} `);
-    //             console.log('> 📡 sending files to web3.storage ');
-    //             const updatedData = data.map((d) => {
-    //                 if (d === item) {
-    //                     return { ...d, link: `https://dweb.link/ipfs/${localCid}` };
-    //                 }
-    //                 return d;
-    //             });
-    //             setData(updatedData);
-    //         },
-    //         onStoredChunk: (bytes) => console.log(`> 🛰 sent ${bytes.toLocaleString()} bytes to web3.storage`),
         },[]);
     getPatches();
     return (

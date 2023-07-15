@@ -1,14 +1,12 @@
+// const {contractAddress,StorageAPI} = {contract:process.env.REACT_APP_CONTRACT_ADDRESS,StorageAPI:process.env.REACT_APP_STORAGE_API}
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
-import { ABI, contractAddress,StorageAPI } from '../contract';
+import {ABI} from '../contract';
 import {Web3Storage} from 'web3.storage';
 import Web3 from 'web3';
 import axios from "axios";
 const UploadButton = ({ onClick }) => {
     const fileInputRef = useRef(null);
-
-
-
     const handleUpload = async () => {
         const files = fileInputRef.current.files;
         if (files.length > 0) {
@@ -32,12 +30,12 @@ export default function Dev() {
     const [contract, setContract] = useState(null);
     const [account, setAccount] = useState(null);
     const [patches, setPatches] = useState(null);
-    const [file, setFile] = useState(null);
+    const [files, setFiles] = useState({});
   
-    const client  = new Web3Storage({token: StorageAPI});
+    const client  = new Web3Storage({token: process.env.REACT_APP_STORAGE_API});
     const connectContract = async () => {
         const web3 = new Web3(window.ethereum);
-        const myContract = new web3.eth.Contract(ABI, contractAddress);
+        const myContract = new web3.eth.Contract(ABI, process.env.REACT_APP_CONTRACT_ADDRESS);
         setContract(myContract);
         console.log("Contract Connected");
     }
@@ -59,8 +57,11 @@ export default function Dev() {
             console.log(error);
         }
     }
-    const FileChange = (e) => {
-        setFile(e.target.files[0])
+    const FileChange = (e, index) => {
+      setFiles((prevFiles) => ({
+        ...prevFiles,
+        [index]: e.target.files[0],
+      }));
     };
 
     
@@ -71,31 +72,31 @@ export default function Dev() {
     }
   
     
-    const requestQA = async (e) => {
+    const requestQA = async (e,index) => {
         e.preventDefault();
         let cid ='';
-        await client.put([file],{onRootCidReady: (localCid) => {
+        await client.put([files[index]],{onRootCidReady: (localCid) => {
                 cid = localCid;
         }});
-        const version = document.getElementById(patches[e.target.value][0]).value;
-        console.log(patches[e.target.value][0],
-            patches[e.target.value][1],
-            patches[e.target.value][2],
-            patches[e.target.value][3],
+        const version = document.getElementById(patches[index][0]).value;
+        console.log(patches[index][0],
+            patches[index][1],
+            patches[index][2],
+            patches[index][3],
             version,
             cid)
         const result = await contract.methods
         .requestQA(
-          patches[e.target.value][0],
-          patches[e.target.value][1],
-          patches[e.target.value][2],
-          patches[e.target.value][3],
+          patches[index][0],
+          patches[index][1],
+          patches[index][2],
+          patches[index][3],
           version,
           cid
         )
         .send({ from: account});
         handleSubmit(result.from, result.to, result.gasUsed, result.transactionHash);
-   
+          window.location.reload(true);
     }
     const handleSubmit = async (from, to, gasUsed, id) => {
         const UserTransaction = {
@@ -170,7 +171,7 @@ export default function Dev() {
                                             {row.features.map(feature => <>{feature[0]} </>)}
                                         </td>
                                         <td><input className='form-control-sm' type='text' id={row.name} placeholder='Version Number' /></td>
-                                        <td><input className="form-control form-control-sm" id={index} type="file" onChange={e => FileChange(e)} /></td>
+                                        <td><input className="form-control form-control-sm" id={index} type="file" onChange={e => FileChange(e,index)} /></td>
                                         <td>
                                             {/* <UploadButton onClick={(files) => handleUpload(row, files)} />
                                             {row.link && (
@@ -181,7 +182,7 @@ export default function Dev() {
                                                 </div>
                                             )} */}
                                         </td>
-                                        <td><button className='btn-sm btn-dark' value={index} onClick={(e)=>requestQA(e)}>Upload</button></td>
+                                        <td><button className='btn-sm btn-dark' value={index} onClick={(e)=>requestQA(e,index)}>Upload</button></td>
                                     </tr>);
                                 }) : <>No Patches were Found.</>
                         }

@@ -85,9 +85,10 @@
 //         connectMetamask();connectContract();
 //     },[]);
 //     requestedPatches();
+// const {contractAddress,StorageAPI} = {contract:process.env.REACT_APP_CONTRACT_ADDRESS,StorageAPI:process.env.REACT_APP_STORAGE_API}
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { ABI, contractAddress, StorageAPI } from '../contract';
+import {ABI} from '../contract';
 import Web3 from 'web3';
 import { Web3Storage } from 'web3.storage';
 import axios from 'axios';
@@ -97,11 +98,11 @@ export default function Quality() {
   const [contract, setContract] = useState(null);
   const [account, setAccount] = useState(null);
   const [patches, setPatches] = useState(null);
-  const client = new Web3Storage({ token: StorageAPI });
+  const client = new Web3Storage({ token: process.env.REACT_APP_STORAGE_API });
 
   const connectContract = async () => {
     const web3 = new Web3(window.ethereum);
-    const myContract = new web3.eth.Contract(ABI, contractAddress);
+    const myContract = new web3.eth.Contract(ABI, process.env.REACT_APP_CONTRACT_ADDRESS);
     setContract(myContract);
     console.log('Contract Connected');
   };
@@ -139,6 +140,7 @@ export default function Quality() {
       .send({ from: account });
     console.log(transaction);
     handleSubmit(transaction.from, transaction.to, transaction.gasUsed, transaction.transactionHash);
+    window.location.reload(true);
   };
 
   const rejectPatch = async (e, cid) => {
@@ -155,6 +157,7 @@ export default function Quality() {
       .send({ from: account });
     console.log(transaction);
     handleSubmit(transaction.from, transaction.to, transaction.gasUsed, transaction.transactionHash);
+    window.location.reload(true);
   };
 
   const downloadPatch = async (e, cid) => {

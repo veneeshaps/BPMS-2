@@ -196,10 +196,11 @@
 
 
 
+// const {contractAddress,StorageAPI} = {contract:process.env.REACT_APP_CONTRACT_ADDRESS,StorageAPI:process.env.REACT_APP_STORAGE_API}
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Web3 from 'web3';
-import { ABI, contractAddress } from '../contract';
+import {ABI} from '../contract';
 import axios from 'axios';
 
 export default function Request() {
@@ -253,7 +254,7 @@ export default function Request() {
 
   const connectContract = async () => {
     const web3 = new Web3(window.ethereum);
-    const myContract = new web3.eth.Contract(ABI, contractAddress);
+    const myContract = new web3.eth.Contract(ABI, process.env.REACT_APP_CONTRACT_ADDRESS);
     setContract(myContract);
     console.log('Contract Connected');
   };

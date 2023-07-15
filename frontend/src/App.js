@@ -12,6 +12,7 @@ import Deployment from './Components/Deployment';
 import Dev from './Components/Dev';
 import Quality from './Components/Quality';
 import Previous from './Components/Previous';
+import TransactionDetails from "./Components/Transactions";
 
 export default function App() {
   const [User,setUser] = useState(localStorage.getItem('token')!=null);
@@ -33,6 +34,8 @@ export default function App() {
           <Route path="/dev/patch" element={<Dev />} />
           <Route path="/qa" element={<Quality />} />
           <Route path="/qa/previous" element={<Previous />} />
+          <Route path="reporter/transaction" element={<TransactionDetails />}/>
+
         </Routes>
       ) : (
         <Routes>

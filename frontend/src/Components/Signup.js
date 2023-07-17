@@ -16,7 +16,7 @@ export default function Signup(){
     const handleSubmit = async(event)=>{
         event.preventDefault();
         try{
-            const {data} = await axios.post('http://localhost:3001/signup',{...log})
+            const {data} = await axios.post(process.env.REACT_APP_SERVER_ADDRESS+'/signup',{...log})
             if(data.email==="Email is already Registered."){
                 document.getElementById('emailred').innerHTML = data.email;
             }

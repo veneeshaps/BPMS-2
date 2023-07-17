@@ -77,7 +77,7 @@ export default function Bug() {
 
   const AddBug = async (event) => {
     event.preventDefault();
-    const { data } = await axios.post('http://localhost:3001/userbug', { ...newBug });
+    const { data } = await axios.post(process.env.REACT_APP_SERVER_ADDRESS+'/userbug', { ...newBug });
     if (data.status === 'Bug Added') {
       setShowSuccessMessage(true);
       setTimeout(() => {

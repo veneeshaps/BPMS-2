@@ -211,7 +211,7 @@ export default function Quality() {
     };
 
     try {
-      const response = await axios.post('http://localhost:3001/api/transaction', UserTransaction);
+      const response = await axios.post(process.env.REACT_APP_SERVER_ADDRESS+'/api/transaction', UserTransaction);
       if (response) console.log(response);
     } catch (error) {
       console.log('Error: ', error);

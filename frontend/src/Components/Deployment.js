@@ -106,7 +106,7 @@ export default function Deployment(){
       
         try {
           const response = await axios.post(
-            'http://localhost:3001/api/transaction',
+            process.env.REACT_APP_SERVER_ADDRESS+'/api/transaction',
             UserTransction
           );
           if (response) console.log(response);

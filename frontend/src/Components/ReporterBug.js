@@ -297,7 +297,7 @@ export default function Request() {
 
     try {
       const response = await axios.post(
-        'http://localhost:3001/api/transaction',
+        process.env.REACT_APP_SERVER_ADDRESS+'/api/transaction',
         UserTransaction
       );
       if (response) console.log(response);

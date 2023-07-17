@@ -5,7 +5,7 @@ export default function BReport(){
     const Navigate = useNavigate();
     const [bugs,setBugs] = useState(null);
     const getBugs=async()=>{
-        const {data} = await axios.get("http://localhost:3001/bugreport");
+        const {data} = await axios.get(process.env.REACT_APP_SERVER_ADDRESS+"/bugreport");
         if(data.status==="No Bugs Found"){
             console.log("No Bugs were Found");
         }else{

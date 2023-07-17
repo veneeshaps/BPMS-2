@@ -14,7 +14,7 @@ export default function Login() {
     const handleSubmit = async (event) => {
       event.preventDefault();
       try {
-        const { data } = await axios.post('http://localhost:3001/login', { ...log });
+        const { data } = await axios.post(process.env.REACT_APP_SERVER_ADDRESS+'/login', { ...log });
         localStorage.setItem('token',data.tok);
         if (data.usertype) {
           Navigate('/' + data.usertype.toLowerCase());

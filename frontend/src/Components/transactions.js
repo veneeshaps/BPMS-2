@@ -9,7 +9,7 @@ const TransactionDetails = () => {
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
-        const response = await fetch('http://localhost:3001/api/getTranscation');
+        const response = await fetch(process.env.REACT_APP_SERVER_ADDRESS+'/api/getTranscation');
         let data = await response.json();
         //console.log(data)
         data = data.filter((val,ind) =>val.email == info.email).reverse()

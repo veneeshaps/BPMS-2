@@ -1,4 +1,3 @@
-// const {contractAddress,StorageAPI} = {contract:process.env.REACT_APP_CONTRACT_ADDRESS,StorageAPI:process.env.REACT_APP_STORAGE_API}
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
 import {ABI} from '../contract';

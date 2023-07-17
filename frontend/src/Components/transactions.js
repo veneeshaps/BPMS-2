@@ -21,11 +21,14 @@ const TransactionDetails = () => {
 
     fetchTransactions();
   }, []);
-
+  console.log(transactions);
   return (
     <div className="container-fluid mt-5 px-5">
       <h1>Transaction Details</h1>
-      {transactions.map((transaction) => (
+      {
+       
+      transactions.map((transaction) => (
+        
         <div key={transaction.id} className="card mb-3">
           <div className="card-body">
             <h5 className="card-title">Transaction ID: {transaction.id}</h5>

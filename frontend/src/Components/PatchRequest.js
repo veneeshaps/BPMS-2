@@ -54,7 +54,7 @@ export default function PatchRequest(){
         const result = await contract.methods.requestPatch(patch.name,patch.description,bugs,features).send({from: account });
         console.log(result);
         handleSubmit(result.from, result.to, result.gasUsed, result.transactionHash);
-        // window.location.reload(false);
+        window.location.reload(true);
     }
 
     

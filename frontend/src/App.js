@@ -20,7 +20,7 @@ export default function App() {
     <Router>
       {User ? (
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Login />} />
           <Route path="/user" element={<Home />} />
           <Route path="/user/reportbug" element={<Bug />} />
           <Route path="/user/patch" element={<Patch />} />

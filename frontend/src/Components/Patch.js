@@ -9,7 +9,7 @@ export default function Patch(){
     const [contract,setContract] = useState(null);
     const [account,setAccount] = useState(null);
     const [patches,setPatches] = useState(null);
-    const client = new Web3Storage({token: process.env.REACT_APP_STORAGEAPI});
+    const client = new Web3Storage({token: process.env.REACT_APP_STORAGE_API});
     const connectContract=async()=>{
         const web3 = new Web3(window.ethereum);
         const myContract = new web3.eth.Contract(ABI , process.env.REACT_APP_CONTRACT_ADDRESS);

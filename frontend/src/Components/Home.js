@@ -25,7 +25,7 @@ export default function Home() {
             <span className="navbar-toggler-icon"></span>
           </button>
           <Link className="navbar-brand" to="/">
-            BPMS
+            G57
           </Link>
           <span className="ms-4 fw-bold fs-5 text-decoration-underline">User</span>
           <div className="collapse navbar-collapse" id="navbarToggler"></div>
